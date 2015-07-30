@@ -15,54 +15,54 @@ CardTest.prototype.name = 'CardTest';
 CardTest.prototype.tearDown = function() {
   this.stubs.UnSetAll();
   TestCase.TestCase.prototype.tearDown.call(this);
-}
+};
 
 CardTest.prototype.testLocalIdFromCardData = function() {
-  var card_data = MockMtgJson.MtgJsonData['LEA'].cards[0];
+  var card_data = MockMtgJson.MtgJsonData.LEA.cards[0];
   var localid = MtgData.LocalIdFromCardData(card_data);
-  
+
   this.assertEquals(94, localid);
-  
-  var card_data = MockMtgJson.MtgJsonData['ISD'].cards[1];
-  var localid = MtgData.LocalIdFromCardData(card_data);
-  
+
+  card_data = MockMtgJson.MtgJsonData.ISD.cards[1];
+  localid = MtgData.LocalIdFromCardData(card_data);
+
   this.assertEquals('51a', localid);
-}
+};
 
 CardTest.prototype.testIsPlaneOrScheme = function() {
-  var card_data = MockMtgJson.MtgJsonData['ARC'].cards[0];
+  var card_data = MockMtgJson.MtgJsonData.ARC.cards[0];
   this.assertEquals('All in Good Time', card_data.name);
   this.assertTrue(MtgData.IsPlaneOrScheme(card_data));
-  
-  var card_data = MockMtgJson.MtgJsonData['ARC'].cards[1];
+
+  card_data = MockMtgJson.MtgJsonData.ARC.cards[1];
   this.assertEquals('Leonin Abunas', card_data.name);
   this.assertFalse(MtgData.IsPlaneOrScheme(card_data));
-  
-  var card_data = MockMtgJson.MtgJsonData['HOP'].cards[0];
+
+  card_data = MockMtgJson.MtgJsonData.HOP.cards[0];
   this.assertEquals('Academy at Tolaria West', card_data.name);
   this.assertTrue(MtgData.IsPlaneOrScheme(card_data));
-  
-  var card_data = MockMtgJson.MtgJsonData['PC2'].cards[0];
+
+  card_data = MockMtgJson.MtgJsonData.PC2.cards[0];
   this.assertEquals('Akoum', card_data.name);
   this.assertTrue(MtgData.IsPlaneOrScheme(card_data));
-  
-  var card_data = MockMtgJson.MtgJsonData['PC2'].cards[2];
+
+  card_data = MockMtgJson.MtgJsonData.PC2.cards[2];
   this.assertEquals('Chaotic \\u00c6ther', card_data.name);
   this.assertTrue(MtgData.IsPlaneOrScheme(card_data));
-}
+};
 
 CardTest.prototype.testIsStrictlyBasicLand = function() {
   // Setup
   var card_datas = [
-    MockMtgJson.MtgJsonData['ICE'].cards[0],
-    MockMtgJson.MtgJsonData['ICE'].cards[3],
-    MockMtgJson.MtgJsonData['LEA'].cards[0]]
+    MockMtgJson.MtgJsonData.ICE.cards[0],
+    MockMtgJson.MtgJsonData.ICE.cards[3],
+    MockMtgJson.MtgJsonData.LEA.cards[0]];
   // Execute
   var strictly_basics = card_datas.map(MtgData.IsStrictlyBasicLand);
   // Verify
   var expected = [true, false, false];
   this.assertEquals(expected, strictly_basics);
-}
+};
 
 CardTest.prototype.testConstructAndRegister = function() {
   // Setup
@@ -71,14 +71,14 @@ CardTest.prototype.testConstructAndRegister = function() {
   var card_data = MockMtgJson.MtgJsonData[set_code].cards[0];
   var data_manager = new MockDataManager();
   data_manager.registered_card = null;
-  this.stubs.Set(MockDataManager.prototype, 'RegisterCard', function(card) {this.registered_card = card});
+  this.stubs.Set(MockDataManager.prototype, 'RegisterCard', function(card) {this.registered_card = card;});
   // Execute
-  var card = new MtgData.Card(card_data, set_code, row_number, data_manager)
+  var card = new MtgData.Card(card_data, set_code, row_number, data_manager);
   // Verify
   this.assertInstanceOf(card, MtgData.Card);
   this.assertNotEquals(null, data_manager.registered_card);
   this.assertEquals(data_manager.registered_card, card);
-}
+};
 
 CardTest.prototype.testGetRowData = function() {
   // Setup
@@ -87,7 +87,7 @@ CardTest.prototype.testGetRowData = function() {
   var card_data = MockMtgJson.MtgJsonData[set_code].cards[0];
   var data_manager = new MockDataManager();
   var card = new MtgData.Card(card_data, set_code, row_number, data_manager);
-  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES'});
+  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES';});
   // Execute
   var row = card.GetRowData();
   // Verify
@@ -103,7 +103,7 @@ CardTest.prototype.testGetRowData = function() {
     null
   ];
   this.assertEquals(expected, row);
-}
+};
 
 CardTest.prototype.testGetRowData_WithCopyData = function() {
   // Setup
@@ -112,7 +112,7 @@ CardTest.prototype.testGetRowData_WithCopyData = function() {
   var card_data = MockMtgJson.MtgJsonData[set_code].cards[0];
   var data_manager = new MockDataManager();
   var card = new MtgData.Card(card_data, set_code, row_number, data_manager);
-  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES'});
+  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES';});
   // Execute
   card.copies = 4;
   card.foils = 12;
@@ -130,7 +130,7 @@ CardTest.prototype.testGetRowData_WithCopyData = function() {
     12
   ];
   this.assertEquals(expected, row);
-}
+};
 
 CardTest.prototype.testGetHaveCellref = function() {
   // Setup
@@ -139,27 +139,27 @@ CardTest.prototype.testGetHaveCellref = function() {
   var card_data = MockMtgJson.MtgJsonData[set_code].cards[0];
   var data_manager = new MockDataManager();
   var card = new MtgData.Card(card_data, set_code, row_number, data_manager);
-  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES'});
+  this.stubs.Set(MtgData.Card.prototype, 'GetOtherCopiesEquation', function() {return 'OTHER COPIES';});
   // Execute
   var cellref = card.GetHaveCellref();
   // Verify
   this.assertEquals('ISD!A11', cellref);
-}
+};
 
 CardTest.prototype.testGetCopiesInOtherSets = function() {
   // Setup
-  var lea_air_elemental_data = MockMtgJson.MtgJsonData['LEA'].cards[0];
-  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData['LEB'].cards[0];
-  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData['LEB'].cards[1];
+  var lea_air_elemental_data = MockMtgJson.MtgJsonData.LEA.cards[0];
+  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData.LEB.cards[0];
+  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData.LEB.cards[1];
   var data_manager = new MockDataManager();
   var lea_air_elemental = new MtgData.Card(lea_air_elemental_data, 'LEA', 1, data_manager);
   var leb_air_elemental1 = new MtgData.Card(leb_air_elemental_data1, 'LEB', 1, data_manager);
   var leb_air_elemental2 = new MtgData.Card(leb_air_elemental_data2, 'LEB', 2, data_manager);
   function OtherCardsStub(card_name) {
     if (card_name == 'Air Elemental') {
-      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2]
+      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2];
     } else {
-      return []
+      return [];
     }
   }
   this.stubs.Set(MockDataManager.prototype, 'GetCardsByName', OtherCardsStub);
@@ -169,22 +169,22 @@ CardTest.prototype.testGetCopiesInOtherSets = function() {
   // Verify
   this.assertEquals({'LEB': [leb_air_elemental1, leb_air_elemental2]}, lea_other_copies);
   this.assertEquals({'LEA': [lea_air_elemental]}, leb_other_copies);
-}
+};
 
 CardTest.prototype.testGetOtherSetCountFragments = function() {
   // Setup
-  var lea_air_elemental_data = MockMtgJson.MtgJsonData['LEA'].cards[0];
-  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData['LEB'].cards[0];
-  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData['LEB'].cards[1];
+  var lea_air_elemental_data = MockMtgJson.MtgJsonData.LEA.cards[0];
+  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData.LEB.cards[0];
+  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData.LEB.cards[1];
   var data_manager = new MockDataManager();
   var lea_air_elemental = new MtgData.Card(lea_air_elemental_data, 'LEA', 1, data_manager);
   var leb_air_elemental1 = new MtgData.Card(leb_air_elemental_data1, 'LEB', 2, data_manager);
   var leb_air_elemental2 = new MtgData.Card(leb_air_elemental_data2, 'LEB', 3, data_manager);
   function OtherCardsStub(card_name) {
     if (card_name == 'Air Elemental') {
-      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2]
+      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2];
     } else {
-      return []
+      return [];
     }
   }
   this.stubs.Set(MockDataManager.prototype, 'GetCardsByName', OtherCardsStub);
@@ -194,32 +194,32 @@ CardTest.prototype.testGetOtherSetCountFragments = function() {
   // Verify
   this.assertEquals({'LEB': 'SUM(LEB!A2,LEB!A3)'}, lea_other_count_fragments);
   this.assertEquals({'LEA': 'LEA!A1'}, leb_other_count_fragments);
-}
+};
 
 CardTest.prototype.testGetOtherCopiesEquation = function() {
   // Setup
-  var lea_air_elemental_data = MockMtgJson.MtgJsonData['LEA'].cards[0];
-  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData['LEB'].cards[0];
-  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData['LEB'].cards[1];
-  var lea_plains_data = MockMtgJson.MtgJsonData['LEA'].cards[2];
-  var ice_plains_data = MockMtgJson.MtgJsonData['ICE'].cards[0];
-  var isd_abattoir_ghoul_data = MockMtgJson.MtgJsonData['ISD'].cards[0];
+  var lea_air_elemental_data = MockMtgJson.MtgJsonData.LEA.cards[0];
+  var leb_air_elemental_data1 = MockMtgJson.MtgJsonData.LEB.cards[0];
+  var leb_air_elemental_data2 = MockMtgJson.MtgJsonData.LEB.cards[1];
+  var lea_plains_data = MockMtgJson.MtgJsonData.LEA.cards[2];
+  var ice_plains_data = MockMtgJson.MtgJsonData.ICE.cards[0];
+  var isd_abattoir_ghoul_data = MockMtgJson.MtgJsonData.ISD.cards[0];
   var data_manager = new MockDataManager();
   var lea_air_elemental = new MtgData.Card(lea_air_elemental_data, 'LEA', 1, data_manager);
   var leb_air_elemental1 = new MtgData.Card(leb_air_elemental_data1, 'LEB', 2, data_manager);
   var leb_air_elemental2 = new MtgData.Card(leb_air_elemental_data2, 'LEB', 3, data_manager);
   var lea_plains = new MtgData.Card(lea_plains_data, 'LEA', 2, data_manager);
   var ice_plains = new MtgData.Card(ice_plains_data, 'ICE', 1, data_manager);
-  var isd_abattoir_ghoul = new MtgData.Card(isd_abattoir_ghoul_data, 'ISD', 1, data_manager)
+  var isd_abattoir_ghoul = new MtgData.Card(isd_abattoir_ghoul_data, 'ISD', 1, data_manager);
   function OtherCardsStub(card_name) {
     if (card_name == 'Air Elemental') {
-      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2]
+      return [lea_air_elemental, leb_air_elemental1, leb_air_elemental2];
     } else if (card_name == 'Plains') {
-      return [lea_plains, ice_plains]
+      return [lea_plains, ice_plains];
     } else if (card_name == 'Abattoir Ghoul') {
-      return [isd_abattoir_ghoul]
+      return [isd_abattoir_ghoul];
     } else {
-      throw new Error('Unexpected card name: ' + card_name)
+      throw new Error('Unexpected card name: ' + card_name);
     }
   }
   this.stubs.Set(MockDataManager.prototype, 'GetCardsByName', OtherCardsStub);
@@ -237,4 +237,4 @@ CardTest.prototype.testGetOtherCopiesEquation = function() {
     leb_air_other_copies_eqn);
   this.assertEquals(null, lea_plains_other_copies_eqn);
   this.assertEquals(null, isd_abattoir_ghoul_other_copies_eqn);
-}
+};

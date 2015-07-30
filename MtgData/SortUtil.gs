@@ -5,21 +5,23 @@
   * @return {number} >0 if a is larger than b, <0 if b is larger than a, 0 if a and b are equal.
   */
 function NumThenLetterSort(a, b) {
+  var numA = '';
+  var alA = '';
+  var numB = '';
+  var alB = '';
   if (typeof a == 'number') {
-    var numA = a;
-    var alA = '';
+    numA = a;
   } else {
-    var numA = String(a).replace(/\D/g,'');
-    var alA = String(a).replace(/\d/g,'');
+    numA = String(a).replace(/\D/g,'');
+    alA = String(a).replace(/\d/g,'');
   }
   if (typeof b == 'number') {
-    var numB = b;
-    var alB = '';
+    numB = b;
   } else {
-    var numB = String(b).replace(/\D/g,'');
-    var alB = String(b).replace(/\d/g,'');
+    numB = String(b).replace(/\D/g,'');
+    alB = String(b).replace(/\d/g,'');
   }
-  
+
   if (numA != numB) {
     return numA - numB;
   } else if (alA < alB) {

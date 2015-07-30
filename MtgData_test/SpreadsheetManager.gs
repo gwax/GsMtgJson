@@ -20,11 +20,11 @@ SpreadsheetManagerTest.prototype.testBackup = function() {
   // Execute
   var spreadsheet_copy = sheet_manager.Backup();
   this.AddFile(DriveApp.getFileById(spreadsheet_copy.getId()));  // Cleanup
-  var range = sheet.getRange(1, 1, 2, 2);
+  range = sheet.getRange(1, 1, 2, 2);
   range.setValues([[5, 6], [7, 8]]);
   // Verify
   // Old changed
-  var sheet = this.spreadsheet.getSheetByName('Sheet1');
+  sheet = this.spreadsheet.getSheetByName('Sheet1');
   var values = sheet.getRange(1, 1, 2, 2).getValues();
   this.assertEquals([[5, 6], [7, 8]], values);
   // Backup unchanged
@@ -40,7 +40,7 @@ SpreadsheetManagerTest.prototype.testBackup = function() {
   var datestr = new_name.slice(datestart, dateend);
   var time = Date.parse(datestr);
   this.assertGreater(time, 0);
-}
+};
 
 SpreadsheetManagerTest.prototype.testCreateSetsSheet = function() {
   // Setup
@@ -81,7 +81,7 @@ SpreadsheetManagerTest.prototype.testCreateSetsSheet = function() {
     ["","","","","","", '=COUNTIF(PC2!A:A,">0")', '=COUNTIF(PC2!A:A,">=4")', '=IFERROR(SUM(PC2!A:A),0)']
   ];
   this.assertEquals(expected_formulas, data_formulas);
-}
+};
 
 SpreadsheetManagerTest.prototype.testCreateSheetForSet = function() {
   // Setup
@@ -110,7 +110,7 @@ SpreadsheetManagerTest.prototype.testCreateSheetForSet = function() {
     ['=SUM(H4,I4)', '', '', '', '', '', '', '', '']
   ];
   this.assertEquals(expected_formulas, data_formulas);
-}
+};
 
 SpreadsheetManagerTest.prototype.testReadCardCounts = function() {
   // Setup
@@ -135,9 +135,9 @@ SpreadsheetManagerTest.prototype.testReadCardCounts = function() {
       '51b': {'copies': 4},
       '85': {'copies': 7, 'foils': 8}
     }
-  }
+  };
   this.assertEquals(expected, card_counts, 'AssertEquals(' + JSON.stringify(expected) + ', ' + JSON.stringify(card_counts) + ')');
-}
+};
 
 SpreadsheetManagerTest.prototype.testCreateOrUpdateSheetForSet = function() {
   // Setup
@@ -154,23 +154,23 @@ SpreadsheetManagerTest.prototype.testCreateOrUpdateSheetForSet = function() {
     [7, 8]
   ]);
   // Create new data manager and sheet manager so we know that we're not using old data
-  var data_manager = new MtgData.DataManager(MockMtgJson.MtgJsonData);
+  data_manager = new MtgData.DataManager(MockMtgJson.MtgJsonData);
   data_manager.StripOnlineOnly();
   data_manager.BuildAllSets();
-  var sheet_manager = new MtgData.SpreadsheetManager(this.spreadsheet, data_manager);
+  sheet_manager = new MtgData.SpreadsheetManager(this.spreadsheet, data_manager);
   // Execute
   sheet_manager.CreateOrUpdateSheetForSet('ISD');
   // Verify
-  var sheet = this.spreadsheet.getSheetByName('ISD');
-  var range = sheet.getRange('H2:I4');
+  sheet = this.spreadsheet.getSheetByName('ISD');
+  range = sheet.getRange('H2:I4');
   var values = range.getValues();
   var expected = [
     ['', 2],
     [4, ''],
     [7, 8]
-  ]
+  ];
   this.assertEquals(expected, values);
-}
+};
 
 SpreadsheetManagerTest.prototype.testCreateEverything = function() {
   // Setup
@@ -188,7 +188,7 @@ SpreadsheetManagerTest.prototype.testCreateEverything = function() {
   }
   var expected = ['Sets', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2'];
   this.assertEquals(expected, sheetnames);
-}
+};
 
 SpreadsheetManagerTest.prototype.testCheckEquations = function() {
   // Setup
@@ -199,14 +199,16 @@ SpreadsheetManagerTest.prototype.testCheckEquations = function() {
   sheet_manager.DoublePassCreateEverything();
   var sheet = this.spreadsheet.getSheetByName('ISD');
   sheet.getRange('H2:I4').setValues([[1, ''], [5, ''], [1, 1]]);
-  var sheet = this.spreadsheet.getSheetByName('LEB');
+
+  sheet = this.spreadsheet.getSheetByName('LEB');
   sheet.getRange('H2:I4').setValues([[4, ''], ['', 8], [8, 10]]);
-  var sheet = this.spreadsheet.getSheetByName('ICE');
+
+  sheet = this.spreadsheet.getSheetByName('ICE');
   sheet.getRange('H2:I3').setValues([[4, null], [4, null]]);
   // Execute
   SpreadsheetApp.flush();
   // Verify
-  var sheet = this.spreadsheet.getSheetByName('Sets')
+  sheet = this.spreadsheet.getSheetByName('Sets');
   var values = sheet.getDataRange().getValues();
   var expected = [
     ["Release","Code","Name","Block","Type","Cards","Unique","Playsets","Count"],
@@ -221,18 +223,20 @@ SpreadsheetManagerTest.prototype.testCheckEquations = function() {
     [new Date(2012,06,01), 'PC2', 'Planechase 2012 Edition', "", 'planechase', 2,0,0,0]
   ];
   this.assertEquals(expected, values);
-  var sheet = this.spreadsheet.getSheetByName('ISD')
-  var values = sheet.getDataRange().getValues();
-  var expected = [
+
+  sheet = this.spreadsheet.getSheetByName('ISD');
+  values = sheet.getDataRange().getValues();
+  expected = [
     ['Have', 'lID', 'mvID', 'Number', 'Name', 'Artist', 'Other Copies', 'Copies', 'Foils'],
     [1, '51a', 226749, '51a', 'Delver of Secrets', 'Nils Hamm', '', 1, ''],
     [5, '51b', 226755, '51b', 'Insectile Aberration', 'Nils Hamm', '', 5, ''],
     [2, '85', 222911, '85', 'Abattoir Ghoul', 'Volkan Baga', '', 1, 1]
   ];
   this.assertEquals(expected, values);
-  var sheet = this.spreadsheet.getSheetByName('LEA')
-  var values = sheet.getDataRange().getValues();
-  var expected = [
+
+  sheet = this.spreadsheet.getSheetByName('LEA');
+  values = sheet.getDataRange().getValues();
+  expected = [
     ['Have', 'lID', 'mvID', 'Number', 'Name', 'Artist', 'Other Copies', 'Copies', 'Foils'],
     [0, '94', 94, 'undefined', 'Air Elemental', 'Richard Thomas', 'LEB:12', '', ''],
     [0, '95', 95, 'undefined', 'Ancestral Recall', 'Mark Poole', 'LEB:18', '', ''],
@@ -240,4 +244,4 @@ SpreadsheetManagerTest.prototype.testCheckEquations = function() {
     [0, '295', 295, 'undefined', 'Plains', 'Jesper Myrfors', '', '', '']
   ];
   this.assertEquals(expected, values);
-}
+};

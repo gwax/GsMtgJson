@@ -15,21 +15,21 @@ SetTest.prototype.name = 'SetTest';
 SetTest.prototype.tearDown = function() {
   this.stubs.UnSetAll();
   TestCase.TestCase.prototype.tearDown.call(this);
-}
+};
 
 SetTest.prototype.testConstructAndRegister = function() {
   // Setup
   var set_data = MockMtgJson.MtgJsonData['ISD'];
   var data_manager = new MockDataManager();
   data_manager.registered_set = null;
-  this.stubs.Set(MockDataManager.prototype, 'RegisterSet', function(set) {this.registered_set = set});
+  this.stubs.Set(MockDataManager.prototype, 'RegisterSet', function(set) {this.registered_set = set;});
   // Execute
   var set = new MtgData.Set(set_data, data_manager);
   // Verify
   this.assertInstanceOf(set, MtgData.Set);
   this.assertNotEquals(null, data_manager.registered_set);
   this.assertEquals(data_manager.registered_set, set);
-}
+};
 
 SetTest.prototype.testGetRowData = function() {
   // Setup
@@ -52,7 +52,7 @@ SetTest.prototype.testGetRowData = function() {
     '=IFERROR(SUM(ISD!A:A),0)'
   ];
   this.assertEquals(expected, row);
-}
+};
 
 SetTest.prototype.testBuildCards = function() {
   // Setup
@@ -71,7 +71,7 @@ SetTest.prototype.testBuildCards = function() {
   }
   var expected = {'Delver of Secrets': 2, 'Insectile Aberration': 3, 'Abattoir Ghoul': 4};
   this.assertEquals(expected, card_name_to_row);
-}
+};
 
 SetTest.prototype.testBuildCards_IgnorePlanesAndSchemes = function() {
   // Setup
@@ -90,7 +90,7 @@ SetTest.prototype.testBuildCards_IgnorePlanesAndSchemes = function() {
   }
   var expected = {'Armored Griffin': 2, 'Kor Spiritdancer': 3};
   this.assertEquals(expected, card_name_to_row);
-}
+};
 
 SetTest.prototype.testGetCardRowValues = function() {
   // Setup
@@ -108,4 +108,4 @@ SetTest.prototype.testGetCardRowValues = function() {
     ['=SUM(H4,I4)', '85', 222911, '85', 'Abattoir Ghoul', 'Volkan Baga', null, null, null]
   ];
   this.assertEquals(expected, values);
-}
+};

@@ -15,20 +15,20 @@ BatchManagerTest.prototype.name = 'BatchManagerTest';
 BatchManagerTest.prototype.tearDown = function() {
   this.stubs.UnSetAll();
   SpreadsheetTestCase.SpreadsheetTestCase.prototype.tearDown.call(this);
-}
+};
 
 BatchManagerTest.prototype.testInitializeData = function() {
   // Setup
   var data_manager = new MockDataManager();
   var called = [];
-  this.stubs.Set(MockDataManager.prototype, 'StripOnlineOnly', function() {called.push('StripOnlineOnly')});
-  this.stubs.Set(MockDataManager.prototype, 'BuildAllSets', function() {called.push('BuildAllSets')});
+  this.stubs.Set(MockDataManager.prototype, 'StripOnlineOnly', function() {called.push('StripOnlineOnly');});
+  this.stubs.Set(MockDataManager.prototype, 'BuildAllSets', function() {called.push('BuildAllSets');});
   var batch_manager = new MtgData.BatchManager(null, data_manager);
   // Execute
   batch_manager.InitializeData();
   // Verify
   this.assertEquals(['StripOnlineOnly', 'BuildAllSets'], called);
-}
+};
 
 BatchManagerTest.prototype.testGetTodoList_FreshSpreadsheet = function() {
   // Setup
@@ -42,7 +42,7 @@ BatchManagerTest.prototype.testGetTodoList_FreshSpreadsheet = function() {
                   'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2',
                   '#SETS#'];
   this.assertEquals(expected, todo);
-}
+};
 
 BatchManagerTest.prototype.testGetTodoList_CompleteSpreadsheet = function() {
   // Setup
@@ -60,7 +60,7 @@ BatchManagerTest.prototype.testGetTodoList_CompleteSpreadsheet = function() {
                   'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2',
                   '#SETS#'];
   this.assertEquals(expected, todo);
-}
+};
 
 BatchManagerTest.prototype.testGetTodoList_PartialSpreadsheet = function() {
   // Setup
@@ -77,7 +77,7 @@ BatchManagerTest.prototype.testGetTodoList_PartialSpreadsheet = function() {
                   'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2',
                   '#SETS#'];
   this.assertEquals(expected, todo);
-}
+};
 
 BatchManagerTest.prototype.testSetUpBatchJob = function() {
   // Setup
@@ -92,7 +92,7 @@ BatchManagerTest.prototype.testSetUpBatchJob = function() {
   var expected = [['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
                   ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],['#SETS#']];
   this.assertEquals(expected, values);
-}
+};
 
 BatchManagerTest.prototype.testProcessNextItem_NoBatchStatus = function() {
   // Setup
@@ -101,7 +101,7 @@ BatchManagerTest.prototype.testProcessNextItem_NoBatchStatus = function() {
   this.assertRaises(function() {
     batch_manager.ProcessNextItem();
   }, Error('No batch status sheet.'));
-}
+};
 
 BatchManagerTest.prototype.testProcessNextItem_Backup = function() {
   // Setup
@@ -119,7 +119,7 @@ BatchManagerTest.prototype.testProcessNextItem_Backup = function() {
   this.assertEquals(true, backup_called);
   var status_sheet = this.spreadsheet.getSheetByName('#BATCH_STATUS#');
   this.assertNotEquals(null, status_sheet);
-}
+};
 
 BatchManagerTest.prototype.testProcessNextItem_SetsPage = function() {
   // Setup
@@ -136,7 +136,7 @@ BatchManagerTest.prototype.testProcessNextItem_SetsPage = function() {
   this.assertNotEquals(null, sets_sheet);
   var status_sheet = this.spreadsheet.getSheetByName('#BATCH_STATUS#');
   this.assertEquals(null, status_sheet);
-}
+};
 
 BatchManagerTest.prototype.testProcessNextItem_Paused = function() {
   // Setup
@@ -156,7 +156,7 @@ BatchManagerTest.prototype.testProcessNextItem_Paused = function() {
   var status_sheet = this.spreadsheet.getSheetByName('#BATCH_STATUS#');
   var remaining = status_sheet.getDataRange().getValues();
   this.assertEquals([['#SETS#']], remaining);
-}
+};
 
 BatchManagerTest.prototype.testProcessNextItem_SetSheet = function() {
   // Setup
@@ -176,7 +176,7 @@ BatchManagerTest.prototype.testProcessNextItem_SetSheet = function() {
   var status_sheet = this.spreadsheet.getSheetByName('#BATCH_STATUS#');
   var remaining = status_sheet.getDataRange().getValues();
   this.assertEquals([['#SETS#']], remaining);
-}
+};
 
 BatchManagerTest.prototype.testNotePause = function() {
   // Setup
@@ -190,7 +190,7 @@ BatchManagerTest.prototype.testNotePause = function() {
   var status_sheet = this.spreadsheet.getSheetByName('#BATCH_STATUS#');
   var remaining = status_sheet.getDataRange().getValues();
   this.assertEquals([['#PAUSED#'], ['#SETS#']], remaining);
-}
+};
 
 BatchManagerTest.prototype.testProcessWithContinuationCallback_NonStop = function() {
   // Setup
@@ -198,15 +198,15 @@ BatchManagerTest.prototype.testProcessWithContinuationCallback_NonStop = functio
   var batch_manager = new MtgData.BatchManager(this.spreadsheet, data_manager);
   batch_manager.InitializeData();
   batch_manager.SetUpBatchJob();
-  function callback() {return true};
+  function callback() {return true;}
   // Execute
   batch_manager.ProcessWithContinuationCallback(callback);
   // Verify
   var sheets = this.spreadsheet.getSheets();
-  var sheetnames = sheets.map(function(sheet) {return sheet.getName()});
+  var sheetnames = sheets.map(function(sheet) {return sheet.getName();});
   var expected = ['Sets', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2'];
   this.assertEquals(expected, sheetnames);
-}
+};
 
 BatchManagerTest.prototype.testProcessWithContinuationCallback_FalseCallback = function() {
   // Setup
@@ -214,21 +214,21 @@ BatchManagerTest.prototype.testProcessWithContinuationCallback_FalseCallback = f
   var batch_manager = new MtgData.BatchManager(this.spreadsheet, data_manager);
   batch_manager.InitializeData();
   batch_manager.SetUpBatchJob();
-  function callback() {return false};
+  function callback() {return false;}
   // Execute
   batch_manager.ProcessWithContinuationCallback(callback);
   // Verify
   var sheets = this.spreadsheet.getSheets();
-  var sheetnames = sheets.map(function(sheet) {return sheet.getName()});
+  var sheetnames = sheets.map(function(sheet) {return sheet.getName();});
   var expected = ['#BATCH_STATUS#', 'Sheet1'];
   this.assertEquals(expected, sheetnames);
   var remaining = this.spreadsheet.getSheetByName('#BATCH_STATUS#').getDataRange().getValues();
-  var expected = [['#PAUSED#'],
-                  ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
-                  ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
-                  ['#SETS#']];
+  expected = [['#PAUSED#'],
+              ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
+              ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
+              ['#SETS#']];
   this.assertEquals(expected, remaining);
-}
+};
 
 BatchManagerTest.prototype.testProcessWithContinuationCallback_SmallBatches = function() {
   // Setup
@@ -246,7 +246,7 @@ BatchManagerTest.prototype.testProcessWithContinuationCallback_SmallBatches = fu
       } else {
         return false;
       }
-    }
+    };
   }
   // Execute next 2
   batch_manager.ProcessWithContinuationCallback(MakeCountCallback(2));
@@ -256,24 +256,24 @@ BatchManagerTest.prototype.testProcessWithContinuationCallback_SmallBatches = fu
                   ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
                   ['#SETS#']];
   this.assertEquals(expected, remaining);
-  var sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName()});
-  var expected = ['#BATCH_STATUS#', 'Sheet1', 'LEA', 'LEB'];
+  var sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName();});
+  expected = ['#BATCH_STATUS#', 'Sheet1', 'LEA', 'LEB'];
   this.assertEquals(expected, sheetnames);
   // Execute next 4
   batch_manager.ProcessWithContinuationCallback(MakeCountCallback(4));
   // Verify
-  var remaining = this.spreadsheet.getSheetByName('#BATCH_STATUS#').getDataRange().getValues();
-  var expected = [['#PAUSED#'],['HOP'],['ARC'],['ISD'],['PC2'],
-                  ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
-                  ['#SETS#']]
+  remaining = this.spreadsheet.getSheetByName('#BATCH_STATUS#').getDataRange().getValues();
+  expected = [['#PAUSED#'],['HOP'],['ARC'],['ISD'],['PC2'],
+              ['LEA'],['LEB'],['ICE'],['HML'],['pMGD'],['HOP'],['ARC'],['ISD'],['PC2'],
+              ['#SETS#']];
   this.assertEquals(expected, remaining);
-  var sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName()});
-  var expected = ['#BATCH_STATUS#', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD'];
+  sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName();});
+  expected = ['#BATCH_STATUS#', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD'];
   this.assertEquals(expected, sheetnames);
   // Execute remainder
-  batch_manager.ProcessWithContinuationCallback(function() {return true});
+  batch_manager.ProcessWithContinuationCallback(function() {return true;});
   // Verify
-  var sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName()});
-  var expected = ['Sets', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2'];
+  sheetnames = this.spreadsheet.getSheets().map(function(sheet) {return sheet.getName();});
+  expected = ['Sets', 'Sheet1', 'LEA', 'LEB', 'ICE', 'HML', 'pMGD', 'HOP', 'ARC', 'ISD', 'PC2'];
   this.assertEquals(expected, sheetnames);
-}
+};

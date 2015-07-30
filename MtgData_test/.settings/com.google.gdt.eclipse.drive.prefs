@@ -27,5 +27,5 @@ driveScriptType.Set.gs=server_js
 driveScriptType.SortUtil.gs=server_js
 driveScriptType.SpreadsheetManager.gs=server_js
 driveScriptType.SpreadsheetUtil.gs=server_js
-driveVersionFingerprint=c55a8dc45ea9dbaf95775203291f6745
+driveVersionFingerprint=237007eec9639f44c45c7c78ed8b5a75
 eclipse.preferences.version=1

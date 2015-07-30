@@ -1,18 +1,18 @@
 function Set(set_data, data_manager) {
   this.data_manager = data_manager;
-  
-  this.set_code = set_data['code'];
-  this.release_date = set_data['releaseDate'];
-  this.name = set_data['name'];
-  this.block = set_data['block'];
-  this.set_type = set_data['type'];
-  this.card_data = set_data['cards'];
-  
+
+  this.set_code = set_data.code;
+  this.release_date = set_data.releaseDate;
+  this.name = set_data.name;
+  this.block = set_data.block;
+  this.set_type = set_data.type;
+  this.card_data = set_data.cards;
+
   this.cards = [];
-  
+
   this.data_manager.RegisterSet(this);
 }
-Set.prototype = {}
+Set.prototype = {};
 
 Set.prototype.HEADER = [
   'Release',  // A
@@ -24,7 +24,7 @@ Set.prototype.HEADER = [
   'Unique', // G
   'Playsets', // H
   'Count' // I
-]
+];
 
 Set.prototype.GetRowData = function() {
   var have_range = this.set_code + '!A:A';
@@ -42,7 +42,7 @@ Set.prototype.GetRowData = function() {
     playsets_eqn,
     count_eqn
   ];
-}
+};
 
 Set.prototype.BuildCards = function() {
   var sort_id_to_card_data = {};
@@ -53,9 +53,9 @@ Set.prototype.BuildCards = function() {
     var sort_id = LocalIdFromCardData(card_data);
     sort_id_to_card_data[sort_id] = card_data;
   }
-  var sort_ids = Object.keys(sort_id_to_card_data)
+  var sort_ids = Object.keys(sort_id_to_card_data);
   sort_ids.sort(NumThenLetterSort);
-  
+
   this.cards = [];
   for (var i=0; i<sort_ids.length; i++) {
     var card_data = sort_id_to_card_data[sort_ids[i]];
@@ -63,7 +63,7 @@ Set.prototype.BuildCards = function() {
     var card = new Card(card_data, this.set_code, row_number, this.data_manager);
     this.cards.push(card);
   }
-}
+};
 
 Set.prototype.GetCardRowValues = function() {
   var values = [];
@@ -72,4 +72,4 @@ Set.prototype.GetCardRowValues = function() {
     values.push(this.cards[i].GetRowData());
   }
   return values;
-}
+};

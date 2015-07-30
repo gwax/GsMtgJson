@@ -543,4 +543,4 @@ var MtgJsonData = {
        "type": "Plane \\u2014 Xerex",
        "types": ["Plane"]}],
     "type": "planechase"}
-}
+};
