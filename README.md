@@ -9,7 +9,7 @@ and really requires that you know what is going on.
 
 # This project is dead!
 
-Go use [Version 2](https://github.com/gwax/mtgcdb) instead.
+Go use [Version 2](https://github.com/gwax/mtg_ssm) instead.
 
 Version 2 is much faster, easier to use, and more reliable. It is a full
 Python rewrite that generates XLSX spreadsheets.
